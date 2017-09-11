@@ -13,9 +13,9 @@ import java.util.Random;
  */
 public class AG {
 
-   static int limSup = 20;
-   static int limInf = -20;
-   static int tamanhoPop = 100;
+   static int limSup = 10;
+   static int limInf = -10;
+   static int tamanhoPop = 50;
    static int precisao =3;
    static int tamanhoCromossomo;
    static  Populacao populacao;
@@ -40,7 +40,7 @@ public class AG {
         }  
         
        int [] selecao = selecao(fitnessList);
-       
+
        
        System.out.println("Lista de individuos selecionados:");
        for (int i=0;i<(tamanhoPop/2);i++  ){
@@ -50,7 +50,11 @@ public class AG {
                 System.out.print(populacao.cromossomos[x][j]);
            } 
            System.out.println(")");
-        }  
+        }
+       System.out.println("nova geração");
+        Populacao populacao2 = cruzamento(selecao, populacao);
+       
+        populacao2.showCromossomos();
     }
     
     //calcula tamanho do cromossomo de acordo com o limite inferior e superior
@@ -113,7 +117,7 @@ public class AG {
        
         int numero;
         
-        for (int i =0; i<(tamanhoPop/2);i++){
+        for (int i = 0; i<(tamanhoPop/2);i++){
             Random rand = new Random();
              Random rand2 = new Random();
             numero = rand.nextInt(tamanhoPop);
@@ -136,7 +140,40 @@ public class AG {
    } 
    
    
+   //Revisar NÃO ESTA FUNCIONANDO 
+   static Populacao cruzamento (int[] selecao, Populacao pop ){
+               Populacao novaPopulacao  = new Populacao(tamanhoCromossomo, tamanhoPop);
+              for (int i = 0; i <(tamanhoPop/2); i++){
+                  if ((i+1)<(tamanhoPop/2))
+                    novaPopulacao.cromossomos[i] = reproduce (pop.cromossomos[selecao[i]], pop.cromossomos[selecao[i+1]]);
+              }
+               for (int i = ((tamanhoPop/2)-1); i < tamanhoPop; i++){
+                   for (int j = 0; j < (tamanhoPop/2); j++ )
+                    novaPopulacao.cromossomos[i] = pop.cromossomos[selecao[j]];
+              }
+           
+    return novaPopulacao;
+   }
    
    
    
-}
+                            static public Integer[] reproduce(Integer[] father, Integer[] mother) {
+                                Integer[] child=new Integer[father.length];
+                                int crossPoint = (int) (Math.random()*father.length);//make a crossover point
+                                for (int i=0;i<father.length;++i)
+                                {
+                                  if (i<crossPoint)
+                                    child[i]=father[i];
+                                  else
+                                    child[i]=mother[i];
+                                }
+                                return child;
+                         }
+       
+   }
+   
+   
+   
+   
+   
+
