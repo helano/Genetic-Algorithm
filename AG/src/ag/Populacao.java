@@ -60,7 +60,7 @@ public class Populacao {
          for (int i =0; i < tamanhoPop; i++){
              System.out.print(i+":[");
             for(int j=0; j < tamanhoCromossomo; j++){
-                System.out.print(cromossomos[i][j]+",");
+               System.out.print(cromossomos[i][j]+",");
             }
             System.out.println("]");
         } 
@@ -69,7 +69,10 @@ public class Populacao {
            
     return tamanhoPop;
     }  
-    
+     
+     
+     
+       
     
     
 }
