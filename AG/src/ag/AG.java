@@ -6,12 +6,7 @@
 package ag;
 
 import java.util.Random;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.util.Rotation;
+
 
 /**
  *
@@ -19,21 +14,22 @@ import org.jfree.util.Rotation;
  */
 public class AG {
 
-   static int limSup = 4;
-   static int limInf = -4;
-   static int tamanhoPop = 40;
+   static int limSup = 1;
+   static int limInf = -1;
+   static int tamanhoPop = 30;
    static int precisao =3;
-   static int geracoes = 30;
-   static int percentualDeMultacao = 4;
+   static int geracoes = 5;
+   static int percentualDeMultacao = 5; //%
    static int tamanhoCromossomo;
    static  Populacao populacao;
+   static int otimo =0;
    
 
   
     public static void main(String[] args) {
         int[] Integerlist;
         double[] fitnessList = new double[tamanhoPop];
-        double fitnessMedio;
+        double fitnessMedio = 0;
   
         
         tamanhoCromossomo= (int)calculaTamanho(limSup, limInf);
@@ -46,11 +42,8 @@ public class AG {
         
         ////////////////////////////////////////////////////////////////////////////////////
         for (int g = 0; g <geracoes ; g++) {
-            System.out.println(g);
-            
-        /////////////////////////////////////////////////////////////////////////
-        
-        
+            System.out.println(g);            
+        /////////////////////////////////////////////////////////////////////////////////// 
          Integerlist = listaInteiros(populacao);
         
          fitnessList = fitness(getDouble(Integerlist));
@@ -68,11 +61,11 @@ public class AG {
        //System.out.println("Lista de individuos selecionados:");
        for (int i=0;i<(tamanhoPop/2);i++  ){
            int x =selecao[i];
-          // System.out.print(i+"=(");
+           System.out.print(i+"=(");
            for (int j= 0; j<tamanhoCromossomo; j++){
-                //System.out.print(populacao.cromossomos[x][j]);
+                System.out.print(populacao.cromossomos[x][j]);
            } 
-           //System.out.println(")");
+           System.out.println(")");
         }
       // System.out.println("nova geração");
          populacao = cruzamento(selecao, populacao);
@@ -80,13 +73,22 @@ public class AG {
       
         }
        // System.out.println("Lista de Fitness 2ª geração:");
-         fitnessMedio =0;
+         
+          fitnessMedio =0;
         for (int i=0;i<tamanhoPop;i++  ){
-          //  System.out.println(i+"=("+fitnessList[i]+")");
+           System.out.println(i+"=("+fitnessList[i]+")");
             fitnessMedio+=fitnessList[i];
+            if (fitnessList[otimo]< fitnessList[i]){
+               otimo = i;
+            }
             
         }  
          System.out.println("FITNESS MEDIO ª Populacao final =============("+fitnessMedio/tamanhoPop+")");
+         
+        // System.out.println("Fitness MELHOR INDIVIDUO("+fitnessList[otimo]);
+         
+         
+         
          
         
          
@@ -96,10 +98,10 @@ public class AG {
     static double calculaTamanho(int limS, int limI){
         int tamanho;
         int  tamanhoBit=0;
-        tamanho  = (limS - limI) ;
+        tamanho  = (limS - limI);
         //calculando potencias de 2 para encontrar quantos bits precisam ser usados para 
         //representar o intervalo
-            for (int i = 0; tamanho * precisao> Math.pow(2, i) ; ++i ){
+            for (int i = 0; ((Math.pow(10, precisao)) * tamanho) > Math.pow(2, i) ; ++i ){
                 tamanhoBit = i;
             }
             System.out.print("Tamanho dos cromossomos:'"+tamanhoBit+"'");  
@@ -128,6 +130,8 @@ public class AG {
     
         for (int i =0 ; i<tamanhoPop; i++){
             legendaReal[i] =  + limInf + listaInteiros[i]*(limSup-limInf)/(Math.pow(2,tamanhoCromossomo)-1);
+            
+            
             //System.out.println("Correspondente:"+legendaReal[i]);
         }
     
